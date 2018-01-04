@@ -64,4 +64,74 @@ class PostController extends Controller
             }
         }
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function update(Request $request, $id)
+    {
+        // validate
+        $rules = array(
+            'title' => 'required',
+            'content' => 'required'
+        );
+        $validator = Validator::make($request->all(), $rules);
+
+        // process the login
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => '0',
+                'message' => 'Post validation failed',
+                'validator' => $validator
+            ]);
+        } else {
+
+            // request to input
+            $input = $request->all();
+
+            // store
+            $post = Post::find($id);
+            $post->title = $input['title'];
+            $post->content = $input['content'];
+
+            if($post->save()) {
+
+                return response()->json([
+                    'status' => '1',
+                    'message' => 'Post edited'
+                ]);
+
+            } else {
+
+                return response()->json([
+                    'status' => '0',
+                    'message' => 'Post not edited'
+                ]);
+
+            }
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        // delete
+        $post = Post::find($id);
+        $post->delete();
+
+        // response
+        return response()->json([
+            'status' => '1',
+            'message' => 'Post deleted'
+        ]);
+    }
 }
