@@ -9,15 +9,47 @@ use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
-    public function show() {
-        return Post::all();
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id = null) {
+
+        if ($id === null) {
+
+            return response()->json([
+                'status' => 1,
+                'posts' => Post::all()
+            ]);
+
+        } else {
+            $post = Post::find($id);
+
+            if ($post) {
+
+                return response()->json([
+                    'status' => 1,
+                    'post' => $post
+                ]);
+
+            } else {
+
+                return response()->json([
+                    'status' => 0,
+                    'message' => 'No post with given id'
+                ]);
+
+            }
+
+
+        }
+
     }
 
     /**
      * Store a newly created resource in storage.
-     *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -67,10 +99,9 @@ class PostController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
      * @param Request $request
      * @param $id
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -118,9 +149,8 @@ class PostController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
