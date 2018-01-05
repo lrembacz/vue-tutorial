@@ -19,11 +19,11 @@ class PostController extends Controller
 
             return response()->json([
                 'status' => 1,
-                'posts' => Post::all()
+                'posts' => Post::with('user')->get()
             ]);
 
         } else {
-            $post = Post::find($id);
+            $post = Post::find($id)->with('user')->first();
 
             if ($post) {
 
