@@ -11,5 +11,20 @@ let mix = require('laravel-mix');
  |
  */
 
+if (mix.inProduction()) {
+    mix.options({
+        uglify: {
+            uglifyOptions: {
+                warnings: false,
+                comments: false,
+                beautify: false,
+                compress: {
+                    drop_console: true,
+                }
+            }
+        }
+    });
+}
+
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+    .sass('resources/assets/sass/app.scss', 'public/css');
