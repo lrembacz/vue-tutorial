@@ -16,12 +16,14 @@
          <!-- v-for directive - rendering all posts -->
         <!-- v-for directive - rendering all filteredPosts with filter -->
         <div v-if="allposts != {}">
+            <!--event filter captured from child component and handled by getFilter method-->
+            <posts-filter @filter="getFilter"></posts-filter>
 
             <div v-if="status === 0" class="col-md-12">
                 <div class="alert alert-danger"> {{ message }} </div>
             </div>
 
-            <posts-list :posts="allposts.posts"></posts-list>
+            <posts-list :posts="allposts.posts" :filter="filter"></posts-list>
         </div>
 
         <modal-add v-if="showAdd === true" @close="closeModalAdd()"></modal-add>
@@ -44,8 +46,8 @@
                 posts : [],
                 status : -1,
                 message : "",
-                showAdd : false
-
+                showAdd : false,
+                filter : ""
             }
         },
         // watcher waiting for async changes
@@ -60,6 +62,11 @@
         },
         // functions for component
         methods : {
+            // method fired by event hendler to capture filter value
+            getFilter: function(val) {
+                this.filter = val;
+            },
+            // getting all posts via axios get async call
             getPosts: function() {
                 axios.get('/api/posts').then( response => {
                     console.log(response.data);
@@ -72,9 +79,11 @@
                     }
                 });
             },
+            // method to show modal
             showModalAdd: function() {
                 this.showAdd = true;
             },
+            // method to close
             closeModalAdd: function() {
                 this.showAdd = false;
             }
