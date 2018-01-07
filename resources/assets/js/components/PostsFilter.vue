@@ -15,7 +15,7 @@
         created() {
             console.log(this.filter);
         },
-        // watcher which waits for cahnge to filter then emiting event to parent with this value
+        // watcher which waits for change to filter then emiting event to parent with this value
         watch: {
             filter : function(val, oldVal) {
                 this.$emit('filter', this.filter);
