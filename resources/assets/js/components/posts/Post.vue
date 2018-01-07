@@ -23,6 +23,7 @@
 </template>
 
 <script>
+
     export default {
         // post data passing by prop
         props : ['post'],

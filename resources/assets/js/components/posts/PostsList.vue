@@ -9,9 +9,16 @@
 </template>
 
 <script>
+    // importing components to registration
+    import Post from './Post.vue';
+
     export default {
         created() {
             console.log(this.posts);
+        },
+        // local components registration
+        components : {
+            'post' : Post
         },
         // passing props posts to post-list
         props : ['posts', 'filter'],

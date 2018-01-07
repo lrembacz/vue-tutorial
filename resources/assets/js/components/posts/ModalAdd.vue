@@ -16,12 +16,12 @@
                             <div class="form-group">
                                 <label for="title">Tytuł</label>
                                 <!--v-model directive which changes value of string with text from input-->
-                                <input id="title" type="text" class="form-control" v-model="newPost.title" placeholder="Tytuł">
+                                <input id="title" type="text" class="form-control" v-model.trim="newPost.title" placeholder="Tytuł">
                             </div>
                             <div class="form-group">
                                 <label for="content">Treść</label>
                                 <!--v-model directive which changes value of string with text from textarea-->
-                                <textarea id="content" class="form-control" v-model="newPost.content" placeholder="Treść"></textarea>
+                                <textarea id="content" class="form-control" v-model.trim="newPost.content" placeholder="Treść"></textarea>
                             </div>
                         </form>
                     </div>

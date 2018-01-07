@@ -17,7 +17,7 @@
         <!-- v-for directive - rendering all filteredPosts with filter -->
         <div v-if="allposts != {}">
             <!--event filter captured from child component and handled by getFilter method-->
-            <posts-filter @filter="getFilter"></posts-filter>
+            <posts-filter ref="postsfilter"></posts-filter>
 
             <div v-if="status === 0" class="col-md-12">
                 <div class="alert alert-danger"> {{ message }} </div>
@@ -31,9 +31,28 @@
 </template>
 
 <script>
+    // importing components to registration
+    import PostsFilter from './PostsFilter.vue';
+    import PostsList from './PostsList.vue';
+    import ModalAdd from './ModalAdd.vue';
+
     export default {
         created() {
             this.getPosts();
+        },
+        // local components registration
+        components: {
+            'posts-filter' : PostsFilter,
+            'posts-list' : PostsList,
+            'modal-add' : ModalAdd,
+        },
+        mounted () {
+            this.$watch( () => {
+                    return this.$refs.postsfilter.filter
+                }, (val) => {
+                    this.filter = val;
+                }
+            )
         },
         // posts data
         // allposts from async call

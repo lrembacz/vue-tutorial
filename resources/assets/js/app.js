@@ -15,12 +15,7 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('posts', require('./components/Posts.vue'));
-Vue.component('posts-list', require('./components/PostsList.vue'));
-Vue.component('posts-filter', require('./components/PostsFilter.vue'));
-Vue.component('post', require('./components/Post.vue'));
-
-Vue.component('modal-add', require('./components/ModalAdd.vue'));
+Vue.component('posts', require('./components/posts/Posts.vue'));
 
 const app = new Vue({
     el: '#app',
