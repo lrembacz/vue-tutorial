@@ -23,7 +23,7 @@ class PostController extends Controller
             ]);
 
         } else {
-            $post = Post::find($id)->with('user')->first();
+            $post = Post::where('id', '=', $id)->with('user')->first();
 
             if ($post) {
 
