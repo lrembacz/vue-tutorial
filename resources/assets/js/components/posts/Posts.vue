@@ -43,6 +43,8 @@
     import PostsList from './PostsList.vue';
     import Modal from './Modal.vue';
 
+    import PostsModalFunctions from './mixins/PostsModalFunctions';
+
     export default {
         created() {
             this.getPosts();
@@ -53,6 +55,8 @@
             'posts-list' : PostsList,
             'modal' : Modal,
         },
+        // mixins of modals methods
+        mixins: [PostsModalFunctions],
         mounted () {
             this.$watch( () => {
                     return this.$refs.postsfilter.filter
@@ -73,10 +77,6 @@
                 status : -1,
                 message : "",
                 filter : "",
-
-                showAdd : false,
-                showEdit : false,
-                postEditId : 0
             }
         },
         // watcher waiting for async changes
@@ -108,24 +108,6 @@
                     }
                 });
             },
-            // method to show modal
-            showModalAdd: function() {
-                this.showAdd = true;
-            },
-            // method to close
-            closeModalAdd: function() {
-                this.showAdd = false;
-            },
-            // method to show modal
-            showModalEdit: function(id) {
-                console.log('id', id);
-                this.postEditId = id;
-                this.showEdit = true;
-            },
-            // method to close
-            closeModalEdit: function() {
-                this.showEdit = false;
-            }
         },
     }
 </script>
