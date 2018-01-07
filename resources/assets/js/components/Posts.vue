@@ -1,5 +1,18 @@
 <template>
     <div id="posts">
+
+        <!--adding modal part-->
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Konfiguracja
+                </div>
+                <div class="panel-body">
+                    <button @click="showModalAdd()" class="btn btn-primary">Dodaj nowy post</button>
+                </div>
+            </div>
+        </div>
+
          <!-- v-for directive - rendering all posts -->
         <!-- v-for directive - rendering all filteredPosts with filter -->
         <div v-if="allposts != {}">
@@ -10,6 +23,8 @@
 
             <posts-list :posts="allposts.posts"></posts-list>
         </div>
+
+        <modal-add v-if="showAdd === true" @close="closeModalAdd()"></modal-add>
     </div>
 </template>
 
@@ -28,7 +43,8 @@
                 allposts : {},
                 posts : [],
                 status : -1,
-                message : ""
+                message : "",
+                showAdd : false
 
             }
         },
@@ -55,6 +71,12 @@
                         message : "Problem z pobraniem postów"
                     }
                 });
+            },
+            showModalAdd: function() {
+                this.showAdd = true;
+            },
+            closeModalAdd: function() {
+                this.showAdd = false;
             }
         },
     }

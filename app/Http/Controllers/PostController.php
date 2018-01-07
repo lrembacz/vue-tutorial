@@ -64,7 +64,7 @@ class PostController extends Controller
         // process the login
         if ($validator->fails()) {
             return response()->json([
-                'status' => '0',
+                'status' => 0,
                 'message' => 'Post validation failed',
                 'validator' => $validator
             ]);
@@ -82,14 +82,14 @@ class PostController extends Controller
             if($post->save()) {
 
                 return response()->json([
-                    'status' => '1',
+                    'status' => 1,
                     'message' => 'Post added'
                 ]);
 
             } else {
 
                 return response()->json([
-                    'status' => '0',
+                    'status' => 0,
                     'message' => 'Post not added'
                 ]);
 
@@ -115,7 +115,7 @@ class PostController extends Controller
         // process the login
         if ($validator->fails()) {
             return response()->json([
-                'status' => '0',
+                'status' => 0,
                 'message' => 'Post validation failed',
                 'validator' => $validator
             ]);
@@ -132,14 +132,14 @@ class PostController extends Controller
             if($post->save()) {
 
                 return response()->json([
-                    'status' => '1',
+                    'status' => 1,
                     'message' => 'Post edited'
                 ]);
 
             } else {
 
                 return response()->json([
-                    'status' => '0',
+                    'status' => 0,
                     'message' => 'Post not edited'
                 ]);
 
@@ -160,7 +160,7 @@ class PostController extends Controller
 
         // response
         return response()->json([
-            'status' => '1',
+            'status' => 1,
             'message' => 'Post deleted'
         ]);
     }

@@ -19,6 +19,8 @@ Vue.component('posts', require('./components/Posts.vue'));
 Vue.component('posts-list', require('./components/PostsList.vue'));
 Vue.component('post', require('./components/Post.vue'));
 
+Vue.component('modal-add', require('./components/ModalAdd.vue'));
+
 const app = new Vue({
     el: '#app',
 });
