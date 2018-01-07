@@ -17,6 +17,8 @@
                 {{ post.user.name }}
                 <!--deletePost button with on click event using deletePost() function-->
                 <button @click="deletePost(post.id)" class="btn btn-sm btn-danger pull-right">Usuń</button>
+                <!--deletePost button with on click event using deletePost() function-->
+                <button @click="showModalEdit(post.id)" class="btn btn-sm btn-success pull-right">Edytuj</button>
             </div>
         </div>
     </div>
@@ -49,6 +51,9 @@
                         }
                     })
                 }
+            },
+            showModalEdit: function(id) {
+                this.$emit('show-modal-edit', id);
             }
         }
 

@@ -23,10 +23,17 @@
                 <div class="alert alert-danger"> {{ message }} </div>
             </div>
 
-            <posts-list :posts="allposts.posts" :filter="filter"></posts-list>
+            <posts-list :posts="allposts.posts" :filter="filter" @show-modal-edit="showModalEdit"></posts-list>
         </div>
 
-        <modal-add v-if="showAdd === true" @close="closeModalAdd()"></modal-add>
+        <modal v-if="showAdd === true" @close="closeModalAdd()"
+            :component="'post-add'"
+        ></modal>
+        <modal v-if="showEdit === true" @close="closeModalEdit()"
+               :component="'post-edit'" :id="postEditId"
+        >
+            <p slot="modal-header">Edytuj post</p>
+        </modal>
     </div>
 </template>
 
@@ -34,7 +41,7 @@
     // importing components to registration
     import PostsFilter from './PostsFilter.vue';
     import PostsList from './PostsList.vue';
-    import ModalAdd from './ModalAdd.vue';
+    import Modal from './Modal.vue';
 
     export default {
         created() {
@@ -44,7 +51,7 @@
         components: {
             'posts-filter' : PostsFilter,
             'posts-list' : PostsList,
-            'modal-add' : ModalAdd,
+            'modal' : Modal,
         },
         mounted () {
             this.$watch( () => {
@@ -65,8 +72,11 @@
                 posts : [],
                 status : -1,
                 message : "",
+                filter : "",
+
                 showAdd : false,
-                filter : ""
+                showEdit : false,
+                postEditId : 0
             }
         },
         // watcher waiting for async changes
@@ -105,6 +115,16 @@
             // method to close
             closeModalAdd: function() {
                 this.showAdd = false;
+            },
+            // method to show modal
+            showModalEdit: function(id) {
+                console.log('id', id);
+                this.postEditId = id;
+                this.showEdit = true;
+            },
+            // method to close
+            closeModalEdit: function() {
+                this.showEdit = false;
             }
         },
     }

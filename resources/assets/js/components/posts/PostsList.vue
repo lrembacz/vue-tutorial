@@ -3,7 +3,7 @@
          <!-- v-for directive - rendering all posts -->
         <!-- v-for directive - rendering all filteredPosts with filter -->
         <div v-if="posts != []">
-            <post v-for="post in filteredPosts" :key="post.id" :post="post"></post>
+            <post v-for="post in filteredPosts" :key="post.id" :post="post" @show-modal-edit="showModalEdit"></post>
         </div>
     </div>
 </template>
@@ -36,5 +36,10 @@
 
             }
         },
+        methods: {
+            showModalEdit: function(id) {
+                this.$emit('show-modal-edit', id);
+            }
+        }
     }
 </script>
