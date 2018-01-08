@@ -19,6 +19,10 @@
                 <button @click="deletePost(post.id)" class="btn btn-sm btn-danger pull-right">Usuń</button>
                 <!--deletePost button with on click event using deletePost() function-->
                 <button @click="showModalEdit(post.id)" class="btn btn-sm btn-success pull-right">Edytuj</button>
+                <form :id="'delete-form'+post.id" :action="action" method="POST" style="display: none;">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" :value="csrf">
+                </form>
             </div>
         </div>
     </div>
@@ -27,6 +31,12 @@
 <script>
 
     export default {
+        data() {
+            return {
+                csrf : document.head.querySelector('meta[name="csrf-token"]').content,
+                action : ""
+            }
+        },
         // post data passing by prop
         props : ['post'],
         computed : {
@@ -42,15 +52,16 @@
             // deletePost function via axios delete call
             // using default alerts can be replaced sweetalert etc.
             deletePost: function(id) {
-                if (confirm("Czy na pewno chcesz usunąć ten post?")) {
-                    axios.delete('/api/posts/'+id).then( response => {
-                        alert('Usunięto post o id ' + id);
-                    }).catch( err => {
-                        if(err.response) {
-                            alert('Błąd przy usuwaniu')
-                        }
-                    })
-                }
+                this.beforeDeletePost(id);
+                console.log(this.action);
+                Vue.nextTick( () =>{
+                    if (confirm("Czy na pewno chcesz usunąć ten post?")) {
+                        $("#delete-form" + id).submit();
+                    }
+                })
+            },
+            beforeDeletePost: function(id) {
+                this.action = "/posts/" + id;
             },
             showModalEdit: function(id) {
                 this.$emit('show-modal-edit', id);
