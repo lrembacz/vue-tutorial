@@ -1,15 +1,13 @@
 #Lekcja 1 VueJS Podstawy
 
-Przekazywanie statycznej zawartośći z głównej instancji Vue do componentu Posts przez props.
+Przekazywanie statycznej zawartości z głównej instancji Vue do componentu Posts przez props.
 
 ## Instancja Vue w pliku app.js
 
 ```
 const app = new Vue({
     el: '#app',
-    // Vue instance data
     data : {
-        // posts data used in Posts component - passed by props
         posts : [
             {
                 title : "Post 1",
@@ -39,7 +37,7 @@ Przekazuje zmienną / metodę / komponent poprzez props z rodzica (głównej ins
         'posts'
     ]
 ```
-Metoda `props` zadeklarowana wewnątrz komponentu pozwala na manipulacje przekazanego atrybutu wewnątrz komponentu dziecka.
+Tablica `props` zadeklarowana wewnątrz komponentu pozwala na manipulację przekazanego atrybutu wewnątrz komponentu dziecka.
 ```
     [1] {{ posts[0].title }}
     [2] let post1 = this.posts[0].title;
@@ -50,7 +48,7 @@ Można się do niej odwołać wyświetlając zawratość[1] lub odwołując się
 ```
 <input type="text" class="form-control" v-model="filter" placeholder="Search name">
 ```
-Binduje zmienną `filter` do inputa, która reaktywnie przekazuje wpisywany tekst do zmiennej `filter`.
+Binduje zmienną `filter` do inputa, który reaktywnie przekazuje wpisywany tekst do zmiennej `filter`.
 
 ```
         data() {
@@ -70,9 +68,9 @@ Zmienna `filter` zadeklarowana jest w funkcji `data()` w ciele komponentu.
         ...
         </div>
 ```
-Iteruje po tablicy `posts` i umożliwia wyświetlenie kolejnych objektów tablicy np. `{{ post.tile }}`.
+Iteruje po tablicy `posts` i umożliwia wyświetlenie kolejnych objektów tablicy np. `{{ post.title }}`.
 
-### Metoda `computed : {}`
+### `computed : {}` - metody manipulujące danymi na bieżąco.
 ```
         computed: {
             filteredPosts: function () {
@@ -91,10 +89,9 @@ Funkcja `filteredPosts` modyfikuje tablicę `posts` przekazaną do komponentu pr
 
 Wywołanie computed funkcji `filteredPosts` w celu wyświetlenia na bieżąco filtrowanych wyników.
 
-### Metoda `methods : {}`
+### `methods : {}` - metody używan wewnąrz komponentu bądź instancji głównej.
 ```
         methods : {
-            // postData function formatting created_at field
             postData: function(created) {
                 let dataTime = created.split(' ');
                 return dataTime[1] + ' | ' + dataTime[0];
@@ -106,12 +103,14 @@ Funkcja postData formatuje argument ( `created` ) i zwraca odwróconą datę prz
 ```
     {{ postData(post.created_at) }}
 ```
-Wywołanie metody do wyświetlenia jako arguemnt przekazano `post.created_at`.
+Wywołanie metody do wyświetlenia (jako arguemnt przekazano `post.created_at`).
 ```
     {{ postData(post.created_at) }}
 ```
-Metodę można wywołać również wewnątrz instancji np w metodzie `mounted()`
+Metodę można wywołać również wewnątrz instancji np w `mounted()`
 ```
-    let formatedData = postData(post.created_at);
+    mounted() {
+        let formatedData = postData(post.created_at);
+    }
 ```
 Wynik metody będzie zawarty w lokalnej dla tej części skryptu zmiennej `formatedData`.
