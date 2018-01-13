@@ -43,7 +43,7 @@
         data() {
             return {
                 newPost : {
-                    user_id : 1,
+                    user_id : 0,
                     title : "",
                     content : ""
                 },
@@ -51,6 +51,9 @@
                 status : -1,
                 message : ""
             }
+        },
+        created() {
+            this.getUser();
         },
         // watcher waiting for making changes on addingResponse via async call
         watch : {
@@ -104,11 +107,21 @@
             },
             clearForm: function() {
                 this.newPost = {
-                    user_id : 1,
+                    user_id : this.newPost.user_id,
                         title : "",
                         content : ""
                 };
-            }
+            },
+            getUser: function() {
+                axios.get('/user').then( response => {
+                    console.log(response.data);
+                    this.newPost.user_id = response.data;
+                    console.log(this.user);
+                }).catch(err => {
+                    console.log('Problem z pobraniem userId');
+                    alert('Problem z pobraniem userId')
+                });
+            },
         }
     }
 </script>
