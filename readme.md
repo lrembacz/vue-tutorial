@@ -39,13 +39,19 @@ Minimalnym wymaganiem jest odpowiednie ustawienie opcji podanych powyżej.
 composer install
 ```
 
-5 . Utworzenie folderu node_modules
+5 . Seed przykładowych danych do bazy
+
+```
+php artisan db:seed
+```
+
+6 . Utworzenie folderu node_modules
 
 ```
 npm install
 ```
 
-6 . Przejście do trybu developerskiego
+7 . Przejście do trybu developerskiego
 
 ```
 npm run dev
