@@ -52,6 +52,9 @@
                 message : ""
             }
         },
+        created() {
+            this.getUser();
+        },
         // watcher waiting for making changes on addingResponse via async call
         watch : {
             addingResponse(val) {
