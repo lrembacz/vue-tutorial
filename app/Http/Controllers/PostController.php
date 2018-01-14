@@ -170,20 +170,4 @@ class PostController extends Controller
             'message' => 'Post deleted'
         ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function delete($id)
-    {
-        // delete
-        $post = Post::find($id);
-        $post->delete();
-
-        // response
-        Session::flash('message', 'Deleted post with id' . $id);
-        return Redirect::to('/home');
-    }
 }

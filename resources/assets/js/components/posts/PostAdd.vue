@@ -52,7 +52,6 @@
                 'setNewPostTitle',
                 'setNewPostContent',
                 'beforeNewPost',
-                'addNewPost'
             ]),
             // trySave function which validate data and firing beforeNewPost method from store
             trySave: function() {

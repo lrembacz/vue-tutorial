@@ -1,6 +1,5 @@
 import * as types from '../mutation-types'
 import * as urls from '../api/apiUrls'
-import {API_POSTS_URL} from "../api/apiUrls";
 
 const state = {
     // Posts
@@ -20,6 +19,13 @@ const state = {
     postAdd_status : -1,
     postAdd_message : "",
     // PostEdit
+    postToEdit : {},
+    editPost : {
+        title: "",
+        content: ""
+    },
+    postEdit_status : -1,
+    postEdit_message : "",
 }
 
 const getters = {
@@ -76,7 +82,31 @@ const getters = {
 
     postAdd_message(state) {
         return state.postAdd_message;
-    }
+    },
+
+    postToEdit(state) {
+        return state.postToEdit;
+    },
+
+    editPost(state) {
+        return state.editPost;
+    },
+
+    editPostTitle(state) {
+        return state.editPost.title;
+    },
+
+    editPostContent(state) {
+        return state.editPost.content;
+    },
+
+    postEdit_status(state) {
+        return state.postEdit_status;
+    },
+
+    postEdit_message(state) {
+        return state.postEdit_message;
+    },
 
 }
 
@@ -130,6 +160,26 @@ const mutations = {
         state.postAdd_status = postAdd_status;
     },
 
+    [types.SET_EDIT_POST] (state, newPost) {
+        state.editPost = newPost;
+    },
+
+    [types.SET_EDIT_POST_TITLE] (state, title) {
+        state.editPost.title = title;
+    },
+
+    [types.SET_EDIT_POST_CONTENT] (state, content) {
+        state.editPost.content = content;
+    },
+
+    [types.SET_POSTEDIT_MESSAGE] (state, postEdit_message) {
+        state.postEdit_message = postEdit_message;
+    },
+
+    [types.SET_POSTEDIT_STATUS] (state, postEdit_status) {
+        state.postEdit_status = postEdit_status;
+    },
+
 
 }
 
@@ -171,6 +221,9 @@ const actions = {
 
     closeModalAdd: function({ commit }) {
         commit(types.SET_POSTS_SHOW_ADD, false);
+
+        commit(types.SET_POSTADD_MESSAGE, "");
+        commit(types.SET_POSTADD_STATUS, -1);
     },
 
     showModalEdit: function({ commit }, id) {
@@ -180,22 +233,22 @@ const actions = {
 
     closeModalEdit: function({ commit }) {
         commit(types.SET_POSTS_SHOW_EDIT, false);
+
+        commit(types.SET_POSTEDIT_MESSAGE, "");
+        commit(types.SET_POSTEDIT_STATUS, -1);
     },
 
     beforeNewPost: function({ commit, state, dispatch }) {
-        console.log(state.newPost.title);
-        console.log(state.newPost.content);
         if ((state.newPost.title.length > 0) && (state.newPost.content.length > 0)) {
             dispatch('addNewPost');
         } else {
             commit(types.SET_POSTADD_MESSAGE, "Oba pola muszą być wypełnione!");
             commit(types.SET_POSTADD_STATUS, 0);
         }
-
     },
 
-    addNewPost: function({ state, commit, dispatch, rootState }) {
-        axios.post(API_POSTS_URL, state.newPost).then( response => {
+    addNewPost: function({ state, commit, dispatch }) {
+        axios.post(urls.API_POSTS_ADD_URL, state.newPost).then( response => {
             let data = response.data;
             if (data.hasOwnProperty('message')) {
                 commit(types.SET_POSTADD_MESSAGE, data.message);
@@ -204,6 +257,7 @@ const actions = {
                 commit(types.SET_POSTADD_STATUS, parseInt(data.status));
             }
             dispatch('clearForm');
+            dispatch('getPosts');
         }).catch(err => {
             if (err.response) {
                 commit(types.SET_POSTADD_MESSAGE, "Błąd podczas dodawania nowego postu!");
@@ -211,10 +265,73 @@ const actions = {
             }
         });
     },
+
     clearForm({ commit }) {
         commit(types.SET_NEW_POST_CONTENT, "");
         commit(types.SET_NEW_POST_TITLE, "");
-    }
+    },
+
+    getPostToEdit: function({ state, commit, dispatch }, id) {
+        axios.get(urls.API_POSTS_GET_TO_EDIT_URL+id).then( response => {
+            let data = response.data;
+            if (data.hasOwnProperty('post')) {
+                commit('SET_EDIT_POST', data.post);
+                dispatch('setEditPostTitle', data.post.title);
+                dispatch('setEditPostContent', data.post.content);
+            }
+            console.log('getPostToEdit success')
+        }).catch( err => {
+            if (err.response) {
+                console.log('getPostToEdit error')
+            }
+        })
+    },
+
+    setEditPostTitle ({ commit }, title) {
+        commit(types.SET_EDIT_POST_TITLE, title);
+    },
+
+    setEditPostContent ({ commit }, content) {
+        commit(types.SET_EDIT_POST_CONTENT, content);
+    },
+
+    beforeEditPost: function({ commit, state, dispatch }, id) {
+        if ((state.editPost.title.length > 0) && (state.editPost.content.length > 0)) {
+            dispatch('editPost', id);
+        } else {
+            commit(types.SET_POSTEDIT_MESSAGE, "Oba pola muszą być wypełnione!");
+            commit(types.SET_POSTEDIT_STATUS, 0);
+        }
+    },
+
+    editPost: function({ state, commit, dispatch }, id) {
+        axios.put(urls.API_POSTS_EDIT_URL+id, state.editPost).then( response => {
+            let data = response.data;
+            if (data.hasOwnProperty('message')) {
+                commit(types.SET_POSTEDIT_MESSAGE, data.message);
+            }
+            if (data.hasOwnProperty('status')) {
+                commit(types.SET_POSTEDIT_STATUS, parseInt(data.status));
+            }
+            dispatch('getPosts');
+        }).catch(err => {
+            if (err.response) {
+                commit(types.SET_POSTEDIT_MESSAGE, "Błąd podczas dodawania nowego postu!");
+                commit(types.SET_POSTEDIT_STATUS, 0);
+            }
+        });
+    },
+
+    deletePost: function({ state, commit, dispatch }, id) {
+        axios.delete(urls.API_POSTS_DELETE_URL+id).then( response => {
+            alert('Usunięto post o id ' + id);
+        }).catch( err => {
+            if(err.response) {
+                alert('Błąd przy usuwaniu')
+            }
+        })
+    },
+
 
 }
 

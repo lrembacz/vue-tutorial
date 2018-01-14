@@ -1,2 +1,6 @@
 export const API_USER_URL = '/api/user'
 export const API_POSTS_URL = '/api/posts'
+export const API_POSTS_ADD_URL = '/api/posts'
+export const API_POSTS_EDIT_URL = '/api/posts/'
+export const API_POSTS_GET_TO_EDIT_URL = '/api/posts/'
+export const API_POSTS_DELETE_URL = '/api/posts/'

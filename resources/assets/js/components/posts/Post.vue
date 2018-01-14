@@ -15,28 +15,19 @@
 
             <div class="panel-footer">
                 {{ post.user.name }}
-                <!--&lt;!&ndash;deletePost button with on click event using deletePost() function&ndash;&gt;-->
-                <!--<button @click="deletePost(post.id)" class="btn btn-sm btn-danger pull-right">Usuń</button>-->
-                <!--&lt;!&ndash;deletePost button with on click event using deletePost() function&ndash;&gt;-->
-                <!--<button @click="showModalEdit(post.id)" class="btn btn-sm btn-success pull-right">Edytuj</button>-->
-                <!--<form :id="'delete-form'+post.id" :action="action" method="POST" style="display: none;">-->
-                    <!--<input type="hidden" name="_method" value="DELETE">-->
-                    <!--<input type="hidden" name="_token" :value="csrf">-->
-                <!--</form>-->
+                <!--deletePost button with on click event using deletePost() function-->
+                <button @click="beforeDeletePost(post.id)" class="btn btn-sm btn-danger pull-right">Usuń</button>
+                <!--deletePost button with on click event using deletePost() function-->
+                <button @click="showModalEdit(post.id)" class="btn btn-sm btn-success pull-right">Edytuj</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import { mapGetters, mapActions } from 'vuex'
 
     export default {
-        data() {
-            return {
-                csrf : document.head.querySelector('meta[name="csrf-token"]').content,
-                action : ""
-            }
-        },
         // post data passing by prop
         props : ['post'],
         computed : {
@@ -49,23 +40,17 @@
             },
         },
         methods: {
+            ...mapActions('post',[
+                'deletePost',
+                'showModalEdit'
+            ]),
             // deletePost function via axios delete call
             // using default alerts can be replaced sweetalert etc.
-            deletePost: function(id) {
-                this.beforeDeletePost(id);
-                console.log(this.action);
-                Vue.nextTick( () =>{
-                    if (confirm("Czy na pewno chcesz usunąć ten post?")) {
-                        $("#delete-form" + id).submit();
-                    }
-                })
-            },
             beforeDeletePost: function(id) {
-                this.action = "/posts/" + id;
+                if (confirm("Czy na pewno chcesz usunąć ten post?")) {
+                    this.deletePost(id);
+                }
             },
-            showModalEdit: function(id) {
-                this.$emit('show-modal-edit', id);
-            }
         }
 
     }
