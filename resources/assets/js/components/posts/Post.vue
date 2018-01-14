@@ -15,14 +15,14 @@
 
             <div class="panel-footer">
                 {{ post.user.name }}
-                <!--deletePost button with on click event using deletePost() function-->
-                <button @click="deletePost(post.id)" class="btn btn-sm btn-danger pull-right">Usuń</button>
-                <!--deletePost button with on click event using deletePost() function-->
-                <button @click="showModalEdit(post.id)" class="btn btn-sm btn-success pull-right">Edytuj</button>
-                <form :id="'delete-form'+post.id" :action="action" method="POST" style="display: none;">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" :value="csrf">
-                </form>
+                <!--&lt;!&ndash;deletePost button with on click event using deletePost() function&ndash;&gt;-->
+                <!--<button @click="deletePost(post.id)" class="btn btn-sm btn-danger pull-right">Usuń</button>-->
+                <!--&lt;!&ndash;deletePost button with on click event using deletePost() function&ndash;&gt;-->
+                <!--<button @click="showModalEdit(post.id)" class="btn btn-sm btn-success pull-right">Edytuj</button>-->
+                <!--<form :id="'delete-form'+post.id" :action="action" method="POST" style="display: none;">-->
+                    <!--<input type="hidden" name="_method" value="DELETE">-->
+                    <!--<input type="hidden" name="_token" :value="csrf">-->
+                <!--</form>-->
             </div>
         </div>
     </div>

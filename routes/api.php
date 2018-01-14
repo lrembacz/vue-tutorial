@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +14,26 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::group(['middleware'=>['auth:api']], function () {
 
-Route::get('/posts/', 'PostController@show');
-Route::get('/posts/{id}', 'PostController@show');
-Route::post('/posts', 'PostController@store');
-Route::put('/posts/{id}', 'PostController@update');
-Route::delete('/posts/{id}', 'PostController@destroy');
+    Route::get('/user', function (Request $request) {
+        if ($request->user()) {
+            return [
+                "status" => 1,
+                "user" => $request->user()
+            ];
+        } else {
+            return [
+                "status" => 0,
+            ];
+        }
+
+    });
+
+    Route::get('/posts/', 'PostController@show');
+    Route::get('/posts/{id}', 'PostController@show');
+    Route::post('/posts', 'PostController@store');
+    Route::put('/posts/{id}', 'PostController@update');
+    Route::delete('/posts/{id}', 'PostController@destroy');
+
+});

@@ -11,14 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware'=>['auth']], function () {
 
-Route::get('/user', 'UserController@getUser');
+    Route::get('/', 'HomeController@index')->name('home');
 
-Route::delete('/posts/{id}', 'PostController@delete');
+    Route::delete('/posts/{id}', 'PostController@delete');
+
+    Route::get('/{vue_capture?}', function () {
+        return view('home');
+    })->where('vue_capture', '(.*)');
+
+});

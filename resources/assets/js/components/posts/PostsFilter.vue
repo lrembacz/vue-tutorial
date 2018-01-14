@@ -11,15 +11,27 @@
 </template>
 
 <script>
+    import { mapGetters, mapActions } from 'vuex'
+
     export default {
-        created() {
-            console.log(this.filter);
-        },
-        // data filter
-        data() {
-            return {
-                filter: "",
+
+        computed: {
+            ...mapGetters({
+                storedFilter: 'post/filter'
+            }),
+            filter: {
+                get () {
+                    return this.storedFilter
+                },
+                set (value) {
+                    this.setFilter(value);
+                }
             }
         },
+        methods: {
+            ...mapActions('post',[
+                'setFilter'
+            ])
+        }
     }
 </script>

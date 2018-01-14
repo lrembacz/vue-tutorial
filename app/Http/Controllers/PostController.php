@@ -15,17 +15,22 @@ class PostController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id = null) {
+    public function show($id = null, Request $request) {
 
         if ($id === null) {
 
             return response()->json([
                 'status' => 1,
-                'posts' => Post::with('user')->get()
+                'posts' => Post::where('user_id', $request->user()->id)
+                    ->with('user')
+                    ->get()
             ]);
 
         } else {
-            $post = Post::where('id', '=', $id)->with('user')->first();
+            $post = Post::where('user_id', $request->user()->id)
+                ->where('id', '=', $id)
+                ->with('user')
+                ->first();
 
             if ($post) {
 
@@ -57,7 +62,6 @@ class PostController extends Controller
     {
         // validate
         $rules = array(
-            'user_id' => 'required',
             'title' => 'required',
             'content' => 'required'
         );
@@ -77,7 +81,7 @@ class PostController extends Controller
 
             // store
             $post = new Post;
-            $post->user_id = $input['user_id'];
+            $post->user_id = $request->user()->id;
             $post->title = $input['title'];
             $post->content = $input['content'];
 
